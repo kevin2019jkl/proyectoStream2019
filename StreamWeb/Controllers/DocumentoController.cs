@@ -38,19 +38,19 @@ namespace StreamWeb.Controllers
         [HttpPost]
         public void subir(HttpPostedFileBase file)
         {
-            documentoDao dao = new documentoDao();
-            if (file == null) return;
-            string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
-            file.SaveAs(Server.MapPath("~/Uploads/" + archivo));
-            dao.Guardar("~/Uploads/" + archivo);
-            Index();
+            System.Diagnostics.Debug.Write(file.FileName);
+                 documentoDao dao = new documentoDao();
+                 if (file == null) return;
+                 string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
+                 file.SaveAs(Server.MapPath("~/Uploads/" + archivo));
+                 dao.Guardar("~/Uploads/" + archivo);
         }
         
         public FileResult AccionDescargar()
         {
             documentoDao dao = new documentoDao();
             dao.Descargar(Convert.ToInt32(Request.Form["id"]), "nombre");
-            string nombre = "archivo.pdf";
+           // string nombre = "archivo.pdf";
             String ruta =  Server.MapPath("~/DownloadS/" + "nombre" + ".pdf");
             // return File(ruta, "application/pdf", Request.Form["nombre"].ToString() + ".pdf");
             return File(ruta, "application/pdf", "");

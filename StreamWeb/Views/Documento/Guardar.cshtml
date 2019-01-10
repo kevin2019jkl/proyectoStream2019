@@ -10,14 +10,90 @@
     <meta name="viewport" content="width=device-width" />
     <title>Guardar</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+   
 </head>
 <body>
-   
+
     <div>
-        @using (Html.BeginForm("subir", "Documento", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("subir", "Documento", FormMethod.Post, new { enctype = "multipart/form-data" , onsubmit = "return valida(this)" }))
         {
-            <input type="file" name="file" /> <button type="submit">Subir archivo</button>
+        
+            <input type="file" name="file" data-max-size="32154" id="file" />
+            <br><br><label id="label1" name="label1"></label>
+            <br><br><button type="submit" value="Size?">Subir archivo</button>
+        
         }
     </div>
+    <script>
+       
+        function valida(f) {
+           
+            
+            
+            var archivo = document.querySelector("#file").files[0];
+            var archivo2 = document.getElementById("file").value;
+            var navegador = true;
+            var cantDiagonal = 0;
+            var fixUrl = 0;
+        
+            
+            var ok = true;
+            var extension = true;
+            var texto = ".pdf";
+            if (archivo != null) {
+                //verifica la url es correcta y la arregla si es necesario
+                for (var i = 0; i < archivo2.length; i++) {
+                    if (archivo2[i] == "\\") {
+                        cantDiagonal++;
+                        fixUrl = i;
+                    }
+                }
+                if (cantDiagonal > 2) {
+                   
+                    // document.getElementById('<%=file %>').innerHTML = 'C: \\fakepath\\' + archivo2.substring(fixUrl + 1, archivo2.length);
+                    //archivo2 = "ascii.pdf"
+                    navegador = false;
+                }
+                
+
+
+                //verifica el peso
+                if (archivo.size < 1000000) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
+
+                //verifica la extension
+                if (archivo2.substring(archivo2.length - 4, archivo2.length) != texto) {
+                    extension = false;
+                }
+
+                //verifica primero si el navegador no es compatible, despues muestra un alert si hay error
+                if (navegador) {
+                    if (ok == false && extension == false) {
+                        alert("la extension y peso del archivo son incorrectos");
+                        return false;
+                    } else if (ok == false && extension == true) {
+                        alert("el peso del archivo  es incorrecto");
+                        return false;
+                    } else if (ok == true && extension == false) {
+                        alert("la extension del archivo  es incorrecta");
+                        return false;
+                    } else if (ok == true && extension == true) {
+                        return true;
+                    }
+                } else {
+                    alert("su navegador no es compatible");
+                    return false;
+                }
+            } else {
+                alert("no ha seleccionado ningun archivo");
+                return false;
+            }
+        }
+    </script>
+    
 </body>
 </html>

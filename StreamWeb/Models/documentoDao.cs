@@ -5,8 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using System.Text;
-
-
+using System.Net;
 
 namespace StreamWeb.Models
 {
@@ -14,6 +13,7 @@ namespace StreamWeb.Models
     {
         public Documento doc = new Documento();
         String rutaDescargar;
+        
         public void Descargar(int id, String nombre)
         {
             doc = new Documento();
@@ -42,15 +42,18 @@ namespace StreamWeb.Models
             long cantidad = doc.documentoPdf.Length;
             System.Diagnostics.Debug.WriteLine(cantidad);
             rutaDescargar= HttpContext.Current.Server.MapPath("~/DownloadS/" + nombre + ".pdf");
-            
-            Stream fs2 = new FileStream(rutaDescargar, FileMode.Create, FileAccess.Write);
-            
-            for (long count = 0; count < cantidad; count++)
-            {
-                int valor = doc.documentoPdf[count];
-                fs2.WriteByte((byte)valor);
-              
-            }
+           
+
+
+           
+           Stream fs2 = new FileStream(rutaDescargar, FileMode.Create, FileAccess.Write);
+
+             for (long count = 0; count < cantidad; count++)
+             {
+                 int valor = doc.documentoPdf[count];
+                 fs2.WriteByte((byte)valor);
+
+             }
             fs2.Close();
         }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -35,7 +36,7 @@ namespace StreamWeb.Controllers
            
            return View();
         }
-        [HttpPost]
+       
         public void subir(HttpPostedFileBase file)
         {
             System.Diagnostics.Debug.Write(file.FileName);
@@ -50,10 +51,13 @@ namespace StreamWeb.Controllers
         {
             documentoDao dao = new documentoDao();
             dao.Descargar(Convert.ToInt32(Request.Form["id"]), "nombre");
-           // string nombre = "archivo.pdf";
+
             String ruta =  Server.MapPath("~/DownloadS/" + "nombre" + ".pdf");
-            // return File(ruta, "application/pdf", Request.Form["nombre"].ToString() + ".pdf");
+          //  String ruta = @"C:\Users\kcarrera\source\repos\StreamWeb\proyectoStream2019\proyecto_version_Core\ProyectoCoreStream\ProyectoCoreStream\DownloadS\nombre.pdf";
             return File(ruta, "application/pdf", "");
+           /* string baseAddress = "http://192.168.10.112:81";
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(baseAddress + "/Pdfs/uno.pdf");
+            return File("http://192.168.10.112:81/Pdfs/uno.pdf", "application/pdf", "");*/
         }
 
 
